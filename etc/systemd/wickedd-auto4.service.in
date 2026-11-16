@@ -12,6 +12,25 @@ EnvironmentFile=-/etc/sysconfig/network/config
 ExecStart=@wicked_supplicantdir@/wickedd-auto4 --systemd --foreground
 StandardError=null
 Restart=on-abort
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW CAP_SYS_MODULE
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW CAP_SYS_MODULE
+# Needs systemd >= 232
+# ProtectSystem=strict
+# RuntimeDirectory=wicked
+# RuntimeDirectoryPreserve=yes
+# StateDirectory=wicked
+ProtectSystem=full
+ProtectHome=yes
+PrivateDevices=yes
+ProtectHostname=yes
+# NOTE: In some edge cases this can block reading the clock.  See man:systemd.exec(5)
+ProtectClock=yes
+ProtectKernelTunables=yes
+# loads af_packet
+ProtectKernelModules=no
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictRealtime=yes
 
 [Install]
 Alias=dbus-org.opensuse.Network.AUTO4.service
